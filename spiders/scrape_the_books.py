@@ -13,10 +13,22 @@ class BooksSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        page = response.url.split("/")[-1]
-        filename = f'books-{page}'
-        Path(filename).write_bytes(response.body)
-        self.log(f'Saved file {filename}')
+        all_books = response.css('ol.row li')
+        for book in all_books:
+            img_src = book.css('article.product_pod a img::attr(src)').get()
+            title = book.css('article.product_pod h3 a::attr(title)').get()
+            price = book.css('div.product_price p.price_color::text').get()
+
+            result = {
+                'img_src': img_src,
+                'title': title,
+                'price': price
+            }
+            yield  result
+
+
+
+
 
 
 
