@@ -26,6 +26,11 @@ class BooksSpider(scrapy.Spider):
             }
             yield  result
 
+            next_page = response.css("li.next a::attr(href)").get()
+            if next_page is not None:
+                next_page = response.urljoin(next_page)
+                yield scrapy.Request(url=next_page, callback=self.parse)
+
 
 
 
