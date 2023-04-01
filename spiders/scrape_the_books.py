@@ -1,7 +1,6 @@
 from pathlib import Path
 import scrapy
 
-
 class BooksSpider(scrapy.Spider):
     name = "books"
 
@@ -30,7 +29,6 @@ class BooksSpider(scrapy.Spider):
             if next_page is not None:
                 next_page = response.urljoin(next_page)
                 yield scrapy.Request(url=next_page, callback=self.parse)
-
 
 
 
